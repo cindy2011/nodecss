@@ -1,0 +1,9 @@
+@import "reset";
+@import "myfn";
+.bg{@include whbg(750,1270,'bg.jpg')}
+.dicon{@include whbg(86,51,'dicon.png')}
+.icon1{@include whbg(134,135,'icon1.png')}
+.icon2{@include whbg(135,136,'icon2.png')}
+.icon3{@include whbg(140,141,'icon3.png')}
+.icon4{@include whbg(139,140,'icon4.png')}
+.share{@include whbg(300,300,'share.png')}
