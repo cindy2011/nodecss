@@ -7,6 +7,7 @@ var filePath = path.resolve();
 //读取文件存储数组
 var fileArr = [];
 var RemotePath = 'D:/gulpCode/src';
+filePath = RemotePath;
 //读取文件目录
 fs.readdir(filePath, function(err, files) {
     if (err) {
@@ -59,8 +60,8 @@ function readFile(readurl, name) {
                 //是文件
                 if (stats.isFile()) {
                     //读本地images里面的图片
-                    var newUrl = name + '/' + filename;
-                   // var newUrl = RemotePath + '/' + name + '/' + filename;
+                    // var newUrl = name + '/' + filename;
+                    var newUrl = filePath + '/' + name + '/' + filename;
                     fileArr.push({ url: newUrl, name: filename });
                     writeFile(fileArr);
                 }
@@ -71,7 +72,7 @@ function readFile(readurl, name) {
 // 写入到filelisttxt文件
 function writeFile(data) {
     // console.log(data);
-    var startline='@import "reset";\n@import "myfn";\n';
+    var startline = '@import "reset";\n@import "myfn";\n';
     var linecss = [];
     for (var i = 0; i < data.length; i++) {
         var dimensions = sizeOf(data[i].url);
@@ -79,15 +80,10 @@ function writeFile(data) {
         linecss.push("." + nameChoose + "{@include whbg(" + dimensions.width + "," + dimensions.height + ",'" + data[i].name + "')}");
 
     }
-    var linecss =startline+ linecss.join("\n");
-    //读入本地style.scss
-     fs.writeFile(filePath + "/css/" + "style.scss", linecss + '\n',function(err) {
+    var linecss = startline + linecss.join("\n");
+
+    fs.writeFile(filePath + "/css/" + "style.scss", linecss + '\n', function(err) {
         if (err) throw err;
         console.log("写入成功");
     });
-
-    // fs.writeFile(RemotePath + "/css/" + "style.scss", linecss + '\n', function(err) {
-    //     if (err) throw err;
-    //     console.log("写入成功");
-    // });
 }
