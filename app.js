@@ -7,7 +7,7 @@ var filePath = path.resolve();
 //读取文件存储数组
 var fileArr = [];
 var RemotePath = 'D:/gulpCode/src';
-filePath = RemotePath;
+// filePath = RemotePath;
 //读取文件目录
 fs.readdir(filePath, function(err, files) {
     if (err) {
@@ -19,11 +19,7 @@ fs.readdir(filePath, function(err, files) {
         //filePath+"/"+filename不能用/直接连接，Unix系统是”/“，Windows系统是”\“
         fs.stat(path.join(filePath, filename), function(err, stats) {
             if (err) throw err;
-
             if (filename == 'images') {
-                //var readurl = filePath+'/'+filename;
-                //filePath+"/"+filename不能用/直接连接，Unix系统是”/“，Windows系统是”\“
-                //    console.log(path.join(filePath,filename));
                 var name = filename;
                 readFile(path.join(filePath, filename), name);
             }
@@ -48,6 +44,8 @@ function getName(url) {
 }
 //获取文件数组
 function readFile(readurl, name) {
+    //name为文件夹的名字
+    //readurl为文件夹的绝对地址
     var name = name;
     fs.readdir(readurl, function(err, files) {
         if (err) {
@@ -60,18 +58,16 @@ function readFile(readurl, name) {
                 //是文件
                 if (stats.isFile()) {
                     //读本地images里面的图片
-                    // var newUrl = name + '/' + filename;
-                    var newUrl = filePath + '/' + name + '/' + filename;
+                    var newUrl = path.join(filePath, name, filename);
                     fileArr.push({ url: newUrl, name: filename });
                     writeFile(fileArr);
                 }
             });
-        });
+        });        
     });
 }
 // 写入到filelisttxt文件
 function writeFile(data) {
-    // console.log(data);
     var startline = '@import "reset";\n@import "myfn";\n';
     var linecss = [];
     for (var i = 0; i < data.length; i++) {
@@ -81,7 +77,6 @@ function writeFile(data) {
 
     }
     var linecss = startline + linecss.join("\n");
-
     fs.writeFile(filePath + "/css/" + "style.scss", linecss + '\n', function(err) {
         if (err) throw err;
         console.log("写入成功");
